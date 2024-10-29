@@ -390,9 +390,229 @@ student.displayInfo(); // Calls Student's DisplayInfo, ignoring the new method i
 
 ## Task 3
 ### Task Description
+This task is checking the understanding of the OOP principles using Ruby programming language. <br/>
+Task requires to build a catalog system where there should be a base class and multiple classes derived from it, which overrides a method of the base class. The derived classes should inherit the properties of base class and besides should have their specific property.
 
 ### Code in Ruby
+```
+# Base class LibraryItem
+class LibraryItem
+  attr_accessor :title, :author, :publication_year
 
+  def initialize(title, author, publication_year)
+    @title = title
+    @author = author
+    @publication_year = publication_year
+  end
 
+  # Shared method to be overridden by derived classes
+  def display_info
+    puts "Title: #{@title}"
+    puts "Author: #{@author}"
+    puts "Publication Year: #{@publication_year}"
+  end
+end
 
+# Derived class Book
+class Book < LibraryItem
+  attr_accessor :genre
 
+  def initialize(title, author, publication_year, genre)
+    super(title, author, publication_year)
+    @genre = genre
+  end
+
+  def display_info
+    super
+    puts "Genre: #{@genre}"
+  end
+end
+
+# Derived class DVD
+class DVD < LibraryItem
+  attr_accessor :director
+
+  def initialize(title, author, publication_year, director)
+    super(title, author, publication_year)
+    @director = director
+  end
+
+  def display_info
+    super
+    puts "Director: #{@director}"
+  end
+end
+
+# Derived class CD
+class CD < LibraryItem
+  attr_accessor :artist
+
+  def initialize(title, author, publication_year, artist)
+    super(title, author, publication_year)
+    @artist = artist
+  end
+
+  def display_info
+    super
+    puts "Artist: #{@artist}"
+  end
+end
+
+# Library class to manage a collection of LibraryItems
+class Library
+  def initialize
+    @items = []
+  end
+
+  def add_item(item)
+    @items << item
+    puts "#{item.title} has been added to the library."
+  end
+
+  def remove_item(title)
+    @items.delete_if { |item| item.title == title }
+    puts "#{title} has been removed from the library."
+  end
+
+  def display_all_items
+    @items.each do |item|
+      item.display_info
+      puts "--------------------------------"
+    end
+  end
+end
+
+# Main Program
+library = Library.new
+
+# Adding items to the library
+book = Book.new("Concepts of Programming Languages", "Robert Sebesta", 2015, "Programming")
+dvd = DVD.new("Inception", "Christopher Nolan", 2010, "Nolan")
+cd = CD.new("A Day at the Races", "Queen", 1976, "Freddie Mercury")
+
+library.add_item(book)  
+library.add_item(dvd)
+library.add_item(cd)
+
+# Display information for each item
+puts "Displaying individual item information:"
+book.display_info
+puts "--------------------------------"
+dvd.display_info
+puts "--------------------------------"
+cd.display_info
+puts "--------------------------------"
+
+# Display all items in the library
+library.display_all_items
+```
+
+### Code Explanation
+First, base class _LibraryItem_ is created with three attributes for which the getter and setter method is defined by using `attr_accessor`. Then the _display_Info_ function is created which then will be override in derived classes.
+```
+# Base class LibraryItem
+class LibraryItem
+  attr_accessor :title, :author, :publication_year
+
+  def initialize(title, author, publication_year)
+    @title = title
+    @author = author
+    @publication_year = publication_year
+  end
+
+  # Shared method to be overridden by derived classes
+  def display_info
+    puts "Title: #{@title}"
+    puts "Author: #{@author}"
+    puts "Publication Year: #{@publication_year}"
+  end
+end
+```
+Then, three derived class are created. Each class inherits the attributes of the base class and has an additional attribute specific to them. Each class then overrides the _display_Info_ function to display that specific attribute.
+```
+# Derived class Book
+class Book < LibraryItem
+  attr_accessor :genre
+
+  def initialize(title, author, publication_year, genre)
+    super(title, author, publication_year)
+    @genre = genre
+  end
+
+  def display_info
+    super
+    puts "Genre: #{@genre}"
+  end
+end
+
+# Derived class DVD
+class DVD < LibraryItem
+  attr_accessor :director
+
+  def initialize(title, author, publication_year, director)
+    super(title, author, publication_year)
+    @director = director
+  end
+
+  def display_info
+    super
+    puts "Director: #{@director}"
+  end
+end
+
+# Derived class CD
+class CD < LibraryItem
+  attr_accessor :artist
+
+  def initialize(title, author, publication_year, artist)
+    super(title, author, publication_year)
+    @artist = artist
+  end
+
+  def display_info
+    super
+    puts "Artist: #{@artist}"
+  end
+end
+```
+To collect the objects of these classes into catalog format another class _Library_ is created. This class has three methods to add, remove and display items of catalog. The display method uses the `display_Info` method to call the specific methods of each derived classes when the objects of these classes are added to catalog.
+```
+# Library class to manage a collection of LibraryItems
+class Library
+  def initialize
+    @items = []
+  end
+
+  def add_item(item)
+    @items << item
+    puts "#{item.title} has been added to the library."
+  end
+
+  def remove_item(title)
+    @items.delete_if { |item| item.title == title }
+    puts "#{title} has been removed from the library."
+  end
+
+  def display_all_items
+    @items.each do |item|
+      item.display_info
+      puts "--------------------------------"
+    end
+  end
+end
+```
+In main program, after creating and adding the object of each derived classes to the _library_, first the _display_info_ method of each classes is used to display the objects. Then these methods called inside _display_all_items_ method by using `item.display_info`
+
+```
+# Display information for each item
+puts "Displaying individual item information:"
+book.display_info
+puts "--------------------------------"
+dvd.display_info
+puts "--------------------------------"
+cd.display_info
+puts "--------------------------------"
+
+# Display all items in the library
+library.display_all_items
+```
